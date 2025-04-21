@@ -18,4 +18,12 @@ def buscar_musica(q: str):
     if not dados["data"]:
         return JSONResponse(status_code=404, content={"mensagem": "Nenhuma música encontrada."})
 
-    
+    primeira = dados["data"][0]
+    resultado = {
+        "musica": primeira["title"],
+        "artista": primeira["artist"]["name"],
+        "album": primeira["album"]["title"],
+        "capa": primeira["album"]["cover_medium"],
+        "previa": primeira["preview"]
+    }
+    return resultado
