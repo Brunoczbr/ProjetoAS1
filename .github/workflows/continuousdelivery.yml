@@ -52,4 +52,4 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: brunoczbr/ProjetoAS1:latest
+          tags: brunoczbr/projetoas1:latest
