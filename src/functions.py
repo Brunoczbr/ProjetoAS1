@@ -1,11 +1,6 @@
-from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse, JSONResponse
-from fastapi.staticfiles import StaticFiles
 import requests
 
-app = FastAPI(title="Buscador de Músicas Deezer")
-@app.get("/", response_class=HTMLResponse)
-def homepage():
+def get_html_homepage():
     return """
     <html>
     <head>
@@ -45,18 +40,18 @@ def homepage():
     </html>
     """
 
-#função para busca de músicas
-@app.get("/buscar")
-def buscar_musica(q: str):
+def buscar_musica_deezer(q: str):
     url = f"https://api.deezer.com/search?q={q}"
     resposta = requests.get(url)
 
     if resposta.status_code != 200:
-        return JSONResponse(status_code=500, content={"erro": "Não foi possível acessar a API do Deezer, tente novamente."})
+        #return JSONResponse(status_code=500, content={"erro": "Não foi possível acessar a API do Deezer, tente novamente."})
+        return None, "Erro na API Deezer"
 
     dados = resposta.json()
     if not dados["data"]:
-        return JSONResponse(status_code=404, content={"mensagem": "Nenhuma música encontrada."})
+        #return JSONResponse(status_code=404, content={"mensagem": "Nenhuma música encontrada."})
+        return None, "Nenhuma música encontrada"
 
     primeira = dados["data"][0]
     resultado = {
@@ -66,4 +61,4 @@ def buscar_musica(q: str):
         "capa": primeira["album"]["cover_medium"],
         "previa": primeira["preview"]
     }
-    return resultado
+    return resultado, None
