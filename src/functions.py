@@ -42,7 +42,10 @@ def get_html_homepage():
 
 def buscar_musica_deezer(q: str):
     url = f"https://api.deezer.com/search?q={q}"
-    resposta = requests.get(url)
+    try:
+        resposta = requests.get(url, timeout=5)
+    except requests.exceptions.Timeout:
+        return None, "Timeout ao tentar acessar a API Deezer"
 
     if resposta.status_code != 200:
         #return JSONResponse(status_code=500, content={"erro": "Não foi possível acessar a API do Deezer, tente novamente."})
