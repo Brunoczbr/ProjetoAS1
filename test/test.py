@@ -1,7 +1,7 @@
 from src.functions import *
 from unittest.mock import patch
 
-@patch('functions.requests.get')
+@patch('src.functions.requests.get')
 def test_buscar_musica_real(mock_get):
 
     mock_response = {
@@ -27,19 +27,19 @@ def test_buscar_musica_real(mock_get):
     assert resultado["artista"] == "Imagine Dragons"
     assert resultado["album"] == "Evolve"
 
-@patch('functions.requests.get')
+@patch('src.functions.requests.get')
 def test_buscar_musica_erro(mock_get):
+        mock_response = {"data": []}
 
-    mock_response = {"data": []}
-    mock_get.return_value.status_code = 200
-    mock_get.return_value.json.return_value = mock_response
+        mock_get.return_value.status_code = 200
+        mock_get.return_value.json.return_value = mock_response
 
-    resultado, erro = buscar_musica_deezer("sadas1321658zxc")
+        resultado, erro = buscar_musica_deezer("sadas1321658zxc")
 
-    assert resultado is None
-    assert erro == "Nenhuma música encontrada"
+        assert resultado is None
+        assert erro == "Nenhuma música encontrada"
 
-@patch('functions.requests.get')
+@patch('src.functions.requests.get')
 def test_erro_na_api(mock_get):
 
     mock_get.return_value.status_code = 500
